@@ -33,6 +33,7 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'photo' => ['nullable', 'image', 'max:2048'], // Validation pour la photo (facultative, image, taille max 2MB)
         ]);
 
         $user = User::create([
@@ -44,6 +45,13 @@ class RegisteredUserController extends Controller
             'prenom' => $request->prenom,
         ]);
 
+        // Gestion de l'upload de la photo
+        if ($request->hasFile('photo')) {
+            $path = $request->file('photo')->store('profile_photos', 'public'); // Stocke la photo dans storage/app/public/profile_photos et retourne le chemin
+            $user->photo = $path;
+            $user->save();
+        }
+
         Client::create([
             'prenom'=> $request->prenom,
             'nom' => $request->name,
@@ -51,6 +59,7 @@ class RegisteredUserController extends Controller
             'telephone' => $request->telephone,
             'adresse' => $request->adresse,
         ]);
+
         event(new Registered($user));
 
         Auth::login($user);

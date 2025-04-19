@@ -17,6 +17,7 @@ class Livre extends Model
         'description',
         'image',
         'stock',
+        'categorie',
     ];
 
     // Livre.php

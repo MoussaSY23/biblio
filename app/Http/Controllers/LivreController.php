@@ -7,9 +7,24 @@ use Illuminate\Http\Request;
 
 class LivreController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $livres = Livre::all();
+        $search = $request->input('search');
+        $categorie = $request->input('categorie'); // Récupérer le paramètre de catégorie
+
+        $query = Livre::query();
+
+        if ($search) {
+            $query->where('titre', 'like', '%' . $search . '%')
+                ->orWhere('auteur', 'like', '%' . $search . '%');
+        }
+
+        if ($categorie) {
+            $query->where('categorie', $categorie); // Filtrer par catégorie si elle est présente
+        }
+
+        $livres = $query->paginate(9)->appends(request()->query()); // Conserver tous les paramètres dans la pagination
+
         return view('livres.index', compact('livres'));
     }
 
@@ -27,6 +42,7 @@ class LivreController extends Controller
             'description' => 'required',
             'stock' => 'required|integer',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'categorie' => 'nullable|string|max:255',
         ]);
 
         $livre = Livre::create($request->all());
@@ -37,7 +53,7 @@ class LivreController extends Controller
             $livre->save();
         }
 
-        return redirect()->route('livres.index')->with('success', 'Livre ajouté avec succès!');
+        return redirect()->route('livres.index')->with('success', 'Le livre a été ajouté avec succès.');
     }
 
     public function show(Livre $livre)

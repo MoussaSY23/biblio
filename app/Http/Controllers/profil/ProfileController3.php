@@ -1,29 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\profil;
+
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
 
-class ProfileController extends Controller
+class ProfileController3 extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
-    public function edit(Request $request): View
-    {
-        $user = Auth::user();
-        return view('profile.edit', compact('user'));
-    }
-
-    /**
-     * Update the user's profile information.
-     */
-    public function update(Request $request)
-    {
+    public function mettreAjour(Request $request){
         $user = Auth::user();
 
         $request->validate([
@@ -54,37 +41,5 @@ class ProfileController extends Controller
         $user->save();
 
         return Redirect::route('profile.afficher')->with('success', 'Profil mis à jour avec succès!');
-    }
-
-
-    /**
-     * Delete the user's account.
-     */
-    public function destroy(Request $request): RedirectResponse
-    {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
-        ]);
-
-        $user = $request->user();
-
-        Auth::logout();
-
-        $user->delete();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return Redirect::to('/');
-    }
-
-    public function afficher(){
-        return view('profil');
-    }
-
-    public function modifier()
-    {
-        $user = Auth::user();
-        return view('profile.edit', compact('user'));
     }
 }

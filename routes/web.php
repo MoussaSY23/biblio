@@ -9,11 +9,13 @@ use App\Http\Controllers\ClientController;
 use App\Models\Livre;
 
 Route::get('/', function () {
-    return view('welcome');
+    $livres = Livre::all();
+    return view('welcome' , compact('livres'));
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $livres = Livre::all();
+    return view('dashboard' , compact('livres'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -39,6 +41,9 @@ Route::resource('clients', ClientController::class);
 
 Route::put('/commandes/{id}/statut', [CommandeController::class, 'updateStatut'])->name('commandes.updateStatut');
 Route::get('profile', [ProfileController::class, 'afficher'])->name('profile.afficher');
+Route::get('profile2', [\App\Http\Controllers\ProfileController2::class, 'modifier'])->name('profile2.modifier');
+Route::put('profile3', [\App\Http\Controllers\profil\ProfileController3::class, 'mettreAjour'])->name('profile3.mettreAjour');
+
 // Ajouter des routes spécifiques comme l'affichage des statistiques
 Route::get('statistiques', [CommandeController::class, 'statistiques'])->name('statistiques');
 Route::get('rapport', [CommandeController::class, 'rapport'])->name('rapport');
@@ -57,9 +62,11 @@ Route::get('commandes/{commande}/envoyer-facture', [CommandeController::class, '
 
 Route::get('/catalogue', function () {
     $livres = Livre::all();
-    return view('catalogue' , compact('livres')); // Crée un fichier resources/views/catalogue.blade.php
+    $livresParAuteur = $livres->groupBy('auteur');
+    return view('catalogue' , compact('livresParAuteur')); // Crée un fichier resources/views/catalogue.blade.php
 })->name('catalogue');
 
 
 Route::get('/statistiques', [\App\Http\Controllers\StatistiqueController::class, 'index'])->name('statistiques.index');
 
+Route::delete('/commandes/{commande}/livres/{livre}', [App\Http\Controllers\CommandeController::class, 'supprimerLivre'])->name('commandes.supprimerLivre');

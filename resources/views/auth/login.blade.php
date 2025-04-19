@@ -1,72 +1,64 @@
 <x-guest-layout>
-    <div class="min-h-screen flex items-center justify-center bg-cover bg-center px-4 py-8" style="background-image: url('{{ asset('storage/images/1740016812712.jpg') }}');">
-        <div class="w-full max-w-2xl bg-white bg-opacity-20 backdrop-blur-lg shadow-2xl rounded-2xl border border-white/30 p-10 text-gray-800">
+    <div class="min-h-screen flex items-center justify-center bg-cover bg-center px-4 py-8"
+         style="background-image: url('{{ asset('storage/images/Voitures-Fond-decran-dordinateur-portable.png') }}');">
+        <div class="w-full max-w-md bg-white bg-opacity-30 backdrop-blur-md shadow-xl rounded-xl border border-gray-300/30 p-8 text-white">
 
-            <!-- Titre et intro -->
-            <div class="text-center mb-8">
-                <h1 class="text-4xl font-bold text-white drop-shadow">Bienvenue à <span class="text-yellow-300">Sama Librairie</span></h1>
-                <p class="text-sm text-white/90 mt-2 italic">Découvrez, explorez, lisez 📚</p>
-                <p class="text-sm text-white/80">Connectez-vous pour accéder à votre univers littéraire personnalisé</p>
+            <div class="text-center mb-6">
+                <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-auto text-indigo-300">
+                    <path d="M32 4L56 18V46L32 60L8 46V18L32 4Z" fill="currentColor" opacity="0.5"/>
+                    <path d="M32 8L52 20V44L32 56L12 44V20L32 8Z" fill="currentColor" opacity="0.3"/>
+                    <path d="M32 12L48 22V42L32 52L16 42V22L32 12Z" fill="currentColor" opacity="0.2"/>
+                    <path d="M32 16L44 24V40L32 48L20 40V24L32 16Z" fill="white" opacity="0.1"/>
+                </svg>
+                <h1 class="text-2xl font-bold mt-2 text-white">Bienvenue</h1>
+                <p class="text-sm text-indigo-200 italic mt-1">Votre espace de lecture personnalisé</p>
             </div>
 
-            <!-- Message session -->
-            <x-auth-session-status class="mb-4 text-white" :status="session('status')" />
+            <x-auth-session-status class="mb-4 text-green-300" :status="session('status')" />
 
-            <!-- Formulaire -->
-            <form method="POST" action="{{ route('login') }}" class="space-y-6">
+            <form method="POST" action="{{ route('login') }}" class="space-y-4">
                 @csrf
 
-                <!-- Email -->
-                <div class="relative">
-                    <label for="email" class="block mb-1 text-white text-sm font-medium">Adresse e-mail</label>
+                <div>
+                    <label for="email" class="block mb-1 text-indigo-100 text-sm font-medium">Adresse e-mail</label>
                     <x-text-input id="email" type="email" name="email"
-                                  class="block w-full rounded-md p-3 pl-10 bg-white/80 text-gray-800 shadow-sm focus:ring-2 focus:ring-yellow-400"
-                                  placeholder="exemple@samalibrairie.com"
+                                  class="block w-full rounded-md p-3 bg-white/20 border-indigo-100 text-white shadow-sm focus:ring-2 focus:ring-indigo-300"
+                                  placeholder="votre@email.com"
                                   :value="old('email')" required autofocus autocomplete="username" />
-                    <div class="absolute left-3 top-10 text-gray-400">
-                        <i class="fas fa-envelope"></i>
-                    </div>
-                    <x-input-error :messages="$errors->get('email')" class="mt-1 text-red-500" />
+                    <x-input-error :messages="$errors->get('email')" class="mt-1 text-red-400 text-sm" />
                 </div>
 
-                <!-- Mot de passe -->
-                <div class="relative">
-                    <label for="password" class="block mb-1 text-white text-sm font-medium">Mot de passe</label>
+                <div>
+                    <label for="password" class="block mb-1 text-indigo-100 text-sm font-medium">Mot de passe</label>
                     <x-text-input id="password" type="password" name="password"
-                                  class="block w-full rounded-md p-3 pl-10 bg-white/80 text-gray-800 shadow-sm focus:ring-2 focus:ring-yellow-400"
+                                  class="block w-full rounded-md p-3 bg-white/20 border-indigo-100 text-white shadow-sm focus:ring-2 focus:ring-indigo-300"
                                   placeholder="Votre mot de passe"
                                   required autocomplete="current-password" />
-                    <div class="absolute left-3 top-10 text-gray-400">
-                        <i class="fas fa-lock"></i>
-                    </div>
-                    <x-input-error :messages="$errors->get('password')" class="mt-1 text-red-500" />
+                    <x-input-error :messages="$errors->get('password')" class="mt-1 text-red-400 text-sm" />
                 </div>
 
-                <!-- Options -->
-                <div class="flex items-center justify-between text-sm">
-                    <label class="flex items-center text-white">
-                        <input type="checkbox" name="remember" class="mr-2 rounded border-gray-300 text-yellow-400 focus:ring-yellow-400">
+                <div class="flex items-center justify-between text-sm text-gray-300">
+                    <label class="flex items-center">
+                        <input type="checkbox" name="remember" class="mr-2 rounded border-gray-400 text-indigo-300 focus:ring-indigo-300">
                         Se souvenir de moi
                     </label>
                     @if (Route::has('password.request'))
-                        <a class="text-yellow-200 hover:underline" href="{{ route('password.request') }}">
+                        <a class="text-indigo-200 hover:underline" href="{{ route('password.request') }}">
                             Mot de passe oublié ?
                         </a>
                     @endif
                 </div>
 
-                <!-- Bouton -->
                 <div>
-                    <x-primary-button class="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold py-3 rounded-md transition-all">
+                    <x-primary-button class="w-full bg-indigo-400 hover:bg-indigo-500 text-white font-semibold py-3 rounded-md transition-all focus:ring-2 focus:ring-indigo-300">
                         Se connecter
                     </x-primary-button>
                 </div>
             </form>
 
-            <!-- Lien inscription -->
-            <div class="text-center mt-6 text-sm text-white">
-                Vous n'avez pas encore de compte ?
-                <a href="{{ route('register') }}" class="text-yellow-200 underline hover:text-yellow-300">Créer un compte</a>
+            <div class="text-center mt-6 text-sm text-gray-300">
+                Pas encore de compte ?
+                <a href="{{ route('register') }}" class="text-indigo-200 underline hover:text-indigo-300">Créer un compte</a>
             </div>
 
         </div>
